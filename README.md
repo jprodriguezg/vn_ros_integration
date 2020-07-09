@@ -1,6 +1,3 @@
-# vn_ros_integration
-VN200 ROS integration
-
 # VN ROS Integration
 [![Latest Version](https://img.shields.io/github/release/grvcPerception/vn_ros_integration)](https://github.com/grvcPerception/vn_ros_integration/releases)
 [![License       ](https://img.shields.io/github/license/grvcPerception/vn_ros_integration)](LICENSE)
