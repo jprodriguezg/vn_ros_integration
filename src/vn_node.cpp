@@ -7,8 +7,8 @@
 
 /**
  * @file    vn_node.c
+ * @author  Raul Tapia (raultapia _at_ us.es | github.com/rautaplop)
  * @brief   ROS node for VN integration
- * @author  Raul Tapia
  */
 
 #include "ros/ros.h"
