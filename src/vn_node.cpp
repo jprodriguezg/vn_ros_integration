@@ -12,7 +12,9 @@
  */
 
 #include "ros/ros.h"
+#include "sensor_msgs/TimeReference.h"
 #include "sensor_msgs/Imu.h"
+#include "sensor_msgs/MagneticField.h"
 #include "sensor_msgs/NavSatFix.h"
 #include "geometry_msgs/Vector3Stamped.h"
 #include "VNdata.h"
@@ -25,19 +27,25 @@ int main(int argc, char **argv){
 	init_vn(DEFAULT_UART_PORT);
 	VNMeasures vn;
 
-	ros::Publisher pubImu = n.advertise<sensor_msgs::Imu>("vn/imu", 1000);
-	ros::Publisher pubPosLLA = n.advertise<sensor_msgs::NavSatFix>("vn/lla_position", 1000);
-	ros::Publisher pubPosECEF = n.advertise<geometry_msgs::Vector3Stamped>("vn/ecef_position", 1000);
-	ros::Publisher pubBodyVelocity = n.advertise<geometry_msgs::Vector3Stamped>("vn/body_velocity", 1000);
+	ros::Publisher pubGpsTime	= n.advertise<sensor_msgs::TimeReference>("vn/gps_time", 1000);
+	ros::Publisher pubImu		= n.advertise<sensor_msgs::Imu>("vn/imu", 1000);
+	ros::Publisher pubMag		= n.advertise<sensor_msgs::MagneticField>("vn/mag", 1000);
+	ros::Publisher pubPosLla	= n.advertise<sensor_msgs::NavSatFix>("vn/pos_lla", 1000);
+	ros::Publisher pubPosEcef	= n.advertise<geometry_msgs::Vector3Stamped>("vn/pos_ecef", 1000);
+	ros::Publisher pubVelBody	= n.advertise<geometry_msgs::Vector3Stamped>("vn/vel_body", 1000);
+	ros::Publisher pubAccBody	= n.advertise<geometry_msgs::Vector3Stamped>("vn/acc_body", 1000);
 
 	while (ros::ok()){
 		get_vn_data(&vn);
 
 		/*** --- Messages --- ***/
+		sensor_msgs::TimeReference gpsTimeMsg;
 		sensor_msgs::Imu imuMsg;
-		sensor_msgs::NavSatFix posLLAMsg;
-		geometry_msgs::Vector3Stamped posECEFMsg;
-		geometry_msgs::Vector3Stamped bodyVelocityMsg;
+		sensor_msgs::MagneticField magMsg;
+		sensor_msgs::NavSatFix posLlaMsg;
+		geometry_msgs::Vector3Stamped posEcefMsg;
+		geometry_msgs::Vector3Stamped velBodyMsg;
+		geometry_msgs::Vector3Stamped accBodyMsg;
 
 		/*** --- Header --- ***/
 		std_msgs::Header header;
@@ -45,10 +53,13 @@ int main(int argc, char **argv){
 		header.frame_id = "VN200";
 		
 		/*** --- Message composition --- ***/
+		gpsTimeMsg.header = header;
+		gpsTimeMsg.time_ref = ros::Time(vn.gpstime);
+
+		imuMsg.header = header;
 		tf2::Quaternion q;
 		q.setRPY(vn.attitude.roll, vn.attitude.pitch, vn.attitude.yaw);
 		q.normalize();
-		imuMsg.header = header;
 		imuMsg.orientation.x = q[0];
 		imuMsg.orientation.y = q[1];
 		imuMsg.orientation.z = q[2];
@@ -60,26 +71,39 @@ int main(int argc, char **argv){
 		imuMsg.linear_acceleration.y = vn.accel.y;
 		imuMsg.linear_acceleration.z = vn.accel.z;
 
-		posLLAMsg.header = header;
-		posLLAMsg.latitude = vn.poslla.latitude;
-		posLLAMsg.longitude = vn.poslla.longitude;
-		posLLAMsg.altitude = vn.poslla.altitude;
-		
-		posECEFMsg.header = header;
-		posECEFMsg.vector.x = vn.posecef.x;
-		posECEFMsg.vector.y = vn.posecef.y;
-		posECEFMsg.vector.z = vn.posecef.z;
+		magMsg.header = header;
+		magMsg.magnetic_field.x = vn.mag.x;
+		magMsg.magnetic_field.y = vn.mag.y;
+		magMsg.magnetic_field.z = vn.mag.z;
 
-		bodyVelocityMsg.header = header;
-		bodyVelocityMsg.vector.x = vn.velbody.x;
-		bodyVelocityMsg.vector.y = vn.velbody.y;
-		bodyVelocityMsg.vector.z = vn.velbody.z;
+		posLlaMsg.header = header;
+		posLlaMsg.latitude = vn.poslla.latitude;
+		posLlaMsg.longitude = vn.poslla.longitude;
+		posLlaMsg.altitude = vn.poslla.altitude;
+		
+		posEcefMsg.header = header;
+		posEcefMsg.vector.x = vn.posecef.x;
+		posEcefMsg.vector.y = vn.posecef.y;
+		posEcefMsg.vector.z = vn.posecef.z;
+
+		velBodyMsg.header = header;
+		velBodyMsg.vector.x = vn.velbody.x;
+		velBodyMsg.vector.y = vn.velbody.y;
+		velBodyMsg.vector.z = vn.velbody.z;
+
+		accBodyMsg.header = header;
+		accBodyMsg.vector.x = vn.accbody.x;
+		accBodyMsg.vector.y = vn.accbody.y;
+		accBodyMsg.vector.z = vn.accbody.z;
 
 		/*** --- Publications --- ***/
+		pubGpsTime.publish(gpsTimeMsg);
 		pubImu.publish(imuMsg);
-		pubPosLLA.publish(posLLAMsg);
-		pubPosECEF.publish(posECEFMsg);
-		pubBodyVelocity.publish(bodyVelocityMsg);
+		pubMag.publish(magMsg);
+		pubPosLla.publish(posLlaMsg);
+		pubPosEcef.publish(posEcefMsg);
+		pubVelBody.publish(velBodyMsg);
+		pubAccBody.publish(accBodyMsg);
 	}
 
 	return 0;
