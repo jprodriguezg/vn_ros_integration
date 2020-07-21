@@ -8,8 +8,8 @@
 [VN-200](https://www.vectornav.com/products/vn-200) ROS integration.
 
 ## Topics
-| Name         | Description                    | Message type                  |
-|--------------|--------------------------------|-------------------------------|
+| Name         | Description                                              | Message type                  |
+|--------------|----------------------------------------------------------|-------------------------------|
 | /vn/imu      | IMU (orientation, angular velocity, linear acceleration) | sensor_msgs::Imu              |
 | /vn/mag      | Magnetometer                                             | sensor_msgs::MagneticField    |
 | /vn/gps_time | GPS time reference                                       | sensor_msgs::TimeReference    |
@@ -17,3 +17,4 @@
 | /vn/pos_ecef | GPS ECEF position                                        | geometry_msgs::Vector3Stamped |
 | /vn/vel_body | Body frame velocity                                      | geometry_msgs::Vector3Stamped |
 | /vn/acc_body | Body frame acceleration                                  | geometry_msgs::Vector3Stamped |
+
