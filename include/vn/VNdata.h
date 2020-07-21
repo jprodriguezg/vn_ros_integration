@@ -1,5 +1,5 @@
 /******************************************************************************/
-/*****                              UARTcom.h                             *****/
+/*****                              VNdata.h                              *****/
 /*****                      Raul Tapia && Jesus Tormo                     *****/
 /*****                          GRIFFIN Project                           *****/
 /*****                         GRVC-Robotics Lab.                         *****/
@@ -12,12 +12,11 @@
  */
 
 #include "UARTcom.h"
-#include <time.h>
 
 #define DEFAULT_UART_PORT "/dev/ttyS4"
 #define HEADER_LENGTH     10
 #define MSG_LENGTH        (140 - HEADER_LENGTH)
-#define PI		3.14159265358979323846
+#define PI                3.14159265358979323846
 
 typedef struct {
         float x;
@@ -44,7 +43,7 @@ typedef struct {
 } LLA;
 
 typedef struct {
-	double gpstime;
+        double gpstime;
 
         RPY attitude;
         Point3F gyro;
