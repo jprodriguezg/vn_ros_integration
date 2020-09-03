@@ -7,8 +7,8 @@
 
 /**
  * @file    VNdata.c
- * @brief   Function to get measures from VectorNav sensor
  * @author  Raul Tapia && Jesus Tormo
+ * @brief   Function to get measures from VectorNav sensor
  */
 
 #include "VNdata.h"

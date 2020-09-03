@@ -7,8 +7,8 @@
 
 /**
  * @file    UARTcom.h
- * @brief   Header file for UARTcom.c
  * @author  Raul Tapia && Jesus Tormo
+ * @brief   Header file for UARTcom.c
  */
 
 #include <stdio.h>

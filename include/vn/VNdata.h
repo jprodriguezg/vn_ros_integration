@@ -7,8 +7,8 @@
 
 /**
  * @file    VNdata.h
- * @brief   Header file for VNdata.c
  * @author  Raul Tapia && Jesus Tormo
+ * @brief   Header file for VNdata.c
  */
 
 #include "UARTcom.h"

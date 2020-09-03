@@ -7,8 +7,8 @@
 
 /**
  * @file    UARTcom.c
- * @brief   Comunication functions for UART protocol
  * @author  Raul Tapia && Jesus Tormo
+ * @brief   Comunication functions for UART protocol
  */
 
 #include "UARTcom.h"
